@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.PropertiesFactoryBean;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -57,5 +60,13 @@ public class WebcrawlerController {
         //s.jsp에 결과를 전달
         mv.setViewName("s");        
         return mv;
-	}    
+	}  
+    
+
+	@RequestMapping(value="/t")
+    public void test(){
+
+        System.out.println("===============");
+    }
+
 }

@@ -13,6 +13,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.springboot.fives.vo.TermsNaverVO;
@@ -21,10 +22,22 @@ import com.springboot.fives.vo.TermsNaverVO;
 public class WebcrawlerService {
 
 
+  @Value("${spring.datasource.driver-class-name}")
+  String datasourceDriver;
+
+  @Value("${spring.datasource.url}")
+  String datasourceUrl;
+
+  @Value("${spring.datasource.username}")
+  String datasourceUserName;  
+
+  @Value("${spring.datasource.password}")
+  String datasourcePassword;
+
   public int getTotalCount(String SQL) { 
     int count = 0;
 
-    String JDBCClassName="org.mariadb.jdbc.Driver";
+    String JDBCClassName=datasourceDriver;
   
     // TODO Auto-generated method stub
     try {
@@ -35,9 +48,9 @@ public class WebcrawlerService {
       e.printStackTrace();
     }  
  
-    String     connurl  = "jdbc:mariadb://localhost:3306/study";
-    String     user     = "root";
-    String     password = "1q2w3e4r";
+    String     connurl  = datasourceUrl;
+    String     user     = datasourceUserName;
+    String     password = datasourcePassword;
 
     try (Connection connection = DriverManager.getConnection(connurl, user, password);) {
          
@@ -61,16 +74,13 @@ public class WebcrawlerService {
     catch (SQLException e) {
         e.printStackTrace();
     }    
-
-
-    
     return count;
   }
 
   public ArrayList<TermsNaverVO> selectData(int startCount , int pageViewCount) {
 		ArrayList<TermsNaverVO> result = new ArrayList<TermsNaverVO>();
   
-      String JDBCClassName="org.mariadb.jdbc.Driver";
+      String JDBCClassName=datasourceDriver;
   
       // TODO Auto-generated method stub
       try {
@@ -81,9 +91,9 @@ public class WebcrawlerService {
         e.printStackTrace();
       }  
    
-      String     connurl  = "jdbc:mariadb://localhost:3306/study";
-      String     user     = "root";
-      String     password = "1q2w3e4r";
+      String     connurl  = datasourceUrl;
+      String     user     = datasourceUserName;
+      String     password = datasourcePassword;
   
       try (Connection connection = DriverManager.getConnection(connurl, user, password);) {
            
@@ -129,7 +139,7 @@ public class WebcrawlerService {
     System.out.println("==============================================================");
   }
 
-    String JDBCClassName="org.mariadb.jdbc.Driver";
+    String JDBCClassName=datasourceDriver;
 
 		// TODO Auto-generated method stub
     try {
@@ -141,10 +151,9 @@ public class WebcrawlerService {
     }  
 	  
     
-    System.out.println(".................Access DB Insert");
-    String     connurl  = "jdbc:mariadb://localhost:3306/study";
-    String     user     = "root";
-    String     password = "1q2w3e4r";
+    String     connurl  = datasourceUrl;
+    String     user     = datasourceUserName;
+    String     password = datasourcePassword;
 
     try (Connection connection = DriverManager.getConnection(connurl, user, password);) {
           connection.setAutoCommit(false);
