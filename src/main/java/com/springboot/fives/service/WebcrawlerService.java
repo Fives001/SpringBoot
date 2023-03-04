@@ -113,7 +113,7 @@ public class WebcrawlerService {
   }
 
 
-
+//웹 수집한 데이터를 mariaDB에 입력
  public void insertData(ArrayList<Hashtable<String,String>> ar) {
 		
   for (Hashtable<String,String> ht : ar) {
