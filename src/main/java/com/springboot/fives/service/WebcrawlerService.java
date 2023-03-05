@@ -20,6 +20,7 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.springboot.fives.vo.PageInfoVO;
 import com.springboot.fives.vo.TermsNaverVO;
 
 @Service
@@ -39,8 +40,8 @@ public class WebcrawlerService {
   String thumbnailPath;
 
   
-
-  public int getTotalCount(String SQL) { 
+  // 자료 총건수 추출
+  public int getTotalCount(PageInfoVO pageInfoVO, String SQL) { 
     int count = 0;
 
     String JDBCClassName=datasourceDriver;
@@ -62,6 +63,10 @@ public class WebcrawlerService {
          
           if ("".equals(SQL)){
             SQL = "select count(id) as cnt from terms_naver";
+            if (!"".equals(pageInfoVO.getQuery())){
+              SQL +=" where title like '%"+pageInfoVO.getQuery()+"%'";
+           }            
+System.out.println("getTotalCount SQL:"+SQL);
           }
           PreparedStatement pstmt = null;     
 
@@ -83,7 +88,8 @@ public class WebcrawlerService {
     return count;
   }
 
-  public String getPreDBContent(String id) {
+  // 상세페이지 다음자료 id 추출
+  public String getPreDBContent(PageInfoVO pageInfoVO,String id) {
 
     String returnId="";
       String JDBCClassName=datasourceDriver;
@@ -106,6 +112,9 @@ public class WebcrawlerService {
             String SQL = " select max(id) as id";
                    SQL+= " from terms_naver";
                    SQL+= " where id < ?";
+                   if (!"".equals(pageInfoVO.getQuery())){
+                    SQL +=" and title like '%"+pageInfoVO.getQuery()+"%'";
+                   }                   
             PreparedStatement pstmt = null;     
 
             pstmt = connection.prepareStatement(SQL);
@@ -127,7 +136,8 @@ public class WebcrawlerService {
   
   }
 
-  public String getNextDBContent(String id) {
+  // 상세페이지 다음자료 id 추출
+  public String getNextDBContent(PageInfoVO pageInfoVO,String id) {
     String returnId="";
   
       String JDBCClassName=datasourceDriver;
@@ -150,6 +160,9 @@ public class WebcrawlerService {
             String SQL = " select MIN(id) as id";
                    SQL+= " from terms_naver";
                    SQL+= " where id > ?";
+                   if (!"".equals(pageInfoVO.getQuery())){
+                    SQL +=" and title like '%"+pageInfoVO.getQuery()+"%'";
+                   }                   
             PreparedStatement pstmt = null;     
 
             pstmt = connection.prepareStatement(SQL);
@@ -171,7 +184,7 @@ public class WebcrawlerService {
   }  
 
 
-
+  // DB에 있는 상세페이지 정보 가져오기
   public TermsNaverVO getDBContent(String id) {
 		TermsNaverVO vo = new TermsNaverVO();
   
@@ -219,7 +232,7 @@ public class WebcrawlerService {
   
   }
 
-  public ArrayList<TermsNaverVO> selectData(int startCount , int pageViewCount) {
+  public ArrayList<TermsNaverVO> selectData(PageInfoVO pageInfoVO) {
 		ArrayList<TermsNaverVO> result = new ArrayList<TermsNaverVO>();
   
       String JDBCClassName=datasourceDriver;
@@ -239,7 +252,13 @@ public class WebcrawlerService {
   
       try (Connection connection = DriverManager.getConnection(connurl, user, password);) {
            
-            String SQL = "select id,title,content_url,content,thumb_url from terms_naver limit "+Integer.toString(startCount)+","+Integer.toString(pageViewCount);
+            String SQL = "select id,title,content_url,content,thumb_url from terms_naver";
+                   if (!"".equals(pageInfoVO.getQuery())){
+                      SQL +=" where title like '%"+pageInfoVO.getQuery()+"%'";
+                   }
+                   SQL +=" limit "+pageInfoVO.getStartCount()+","+pageInfoVO.getPageViewCount();
+
+                   System.out.println("selectData SQL:"+SQL);                   
             PreparedStatement pstmt = null;     
 
             pstmt = connection.prepareStatement(SQL);
@@ -439,7 +458,7 @@ public class WebcrawlerService {
        String url = "https://terms.naver.com/list.naver?cid=60195&categoryId=60195&page=1";
        // specify the HTML element to search for
        String elementSelector = "div.thumb_area > div.thumb";
-       for (int j = 1 ; j < 10 ; j++) {
+       for (int j = 1 ; j < 20 ; j++) {
          url = "https://terms.naver.com/list.naver?cid=60195&categoryId=60195&page="+j;
          // retrieve the web page as a JSoup document
          Document doc = Jsoup.connect(url).get();

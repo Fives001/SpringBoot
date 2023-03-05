@@ -11,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.springboot.fives.paging.PageNavigation;
 import com.springboot.fives.service.WebcrawlerService;
+import com.springboot.fives.vo.PageInfoVO;
 import com.springboot.fives.vo.TermsNaverVO;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -40,24 +41,26 @@ public class WebcrawlerController {
 	@RequestMapping(value="/s")
     public ModelAndView select (ModelAndView mv,HttpServletRequest request) throws IOException{
 
-        int pageViewCount=5;
-        String startCount = request.getParameter("startCount")== null ? "0" : request.getParameter("startCount");
+        PageInfoVO pageInfoVO = PageInfoVO.builder()
+                                .startCount(Integer.parseInt(request.getParameter("startCount")== null ? "0" : request.getParameter("startCount")))
+                                .query(request.getParameter("query")== null ? "" : request.getParameter("query"))
+                                .build();
 
-        ArrayList<TermsNaverVO> result = webcrawlerService.selectData(Integer.parseInt(startCount),pageViewCount);
+        ArrayList<TermsNaverVO> result = webcrawlerService.selectData(pageInfoVO);
         PageNavigation pageNavigation = new PageNavigation();
         String paging = null;
 
-        paging = pageNavigation.getPageLinks(Integer.parseInt(startCount) , webcrawlerService.getTotalCount(""), pageViewCount, 5);
+        pageInfoVO.setTotalCount(webcrawlerService.getTotalCount(pageInfoVO,""));
+        paging = pageNavigation.getPageLinks(pageInfoVO);
 
 
         mv.addObject("result",result);
         mv.addObject("paging",paging);
-        mv.addObject("totalCount",webcrawlerService.getTotalCount(""));
-        mv.addObject("startCount",startCount);
+        mv.addObject("pageInfo",pageInfoVO);
 
 
         //s.jsp에 결과를 전달
-        mv.setViewName("s");        
+        mv.setViewName("s2");        
         return mv;
 	}  
     
@@ -73,12 +76,15 @@ public class WebcrawlerController {
     public ModelAndView detail(ModelAndView mv,HttpServletRequest request) throws IOException{
 
         String id = request.getParameter("id")== null ? "" : request.getParameter("id");
-        String startCount = request.getParameter("startCount")== null ? "0" : request.getParameter("startCount");        
+        PageInfoVO pageInfoVO = PageInfoVO.builder()
+                                .startCount(Integer.parseInt(request.getParameter("startCount")== null ? "0" : request.getParameter("startCount")))
+                                .query(request.getParameter("query")== null ? "" : request.getParameter("query"))
+                                .build();
         
         mv.addObject("result",webcrawlerService.getDBContent(id));
-        mv.addObject("preId",webcrawlerService.getPreDBContent(id));
-        mv.addObject("nextId",webcrawlerService.getNextDBContent(id));                
-        mv.addObject("startCount",startCount);                        
+        mv.addObject("preId",webcrawlerService.getPreDBContent(pageInfoVO,id));
+        mv.addObject("nextId",webcrawlerService.getNextDBContent(pageInfoVO,id));                
+        mv.addObject("pageInfo",pageInfoVO);                                
 
 
         mv.setViewName("detail");        

@@ -18,14 +18,30 @@
 
 
 <script>
-    function doPaging(startCount){
-        location.href="/s?startCount="+startCount;
+    function goList(){
+        var frm = document.detailForm;
+        frm.action="s";
+        frm.submit();
     }
+
+    function goDetail(id){
+        var frm = document.detailForm;
+        frm.id.value=id;
+        frm.submit();
+    }    
+
 
 
 </script>
 
 <body>
+<form name="detailForm" id="detailForm">
+    <input type="hidden" name="startCount" value="${pageInfo.startCount}">
+    <input type="hidden" name="query" value="${pageInfo.query}">
+    <input type="hidden" name="id" value="">   
+</form>
+<img src="/images/${result.id}.jpg"/>
+
     <h3>${result.title}</h3>
 <br>
 ${result.content}
@@ -35,12 +51,12 @@ ${result.content}
         <c:choose>
             <c:when test="${empty preId}">
                 <li class="page-item">
-                    <a class="page-link" href="#">이전자료보기xxxxx</a>
+                    <a class="page-link" href="#">이전자료보기</a>
                 </li>
             </c:when>
             <c:otherwise>
                 <li class="page-item active">
-                    <a class="page-link" href="/d?id=${preId}&startCount=${startCount}">이전자료보기</a>                    
+                    <a class="page-link" href="javascript:goDetail('${preId}')">이전자료보기</a>                    
                 </li>
             </c:otherwise>
         </c:choose>
@@ -54,12 +70,12 @@ ${result.content}
             </c:when>
             <c:otherwise>            
                 <li class="page-item active">
-                    <a class="page-link" href="/d?id=${nextId}&startCount=${startCount}">다음자료보기</a>
+                    <a class="page-link" href="javascript:goDetail('${nextId}')">다음자료보기</a>
                 </li>
             </c:otherwise>
         </c:choose>
         <li class="page-item active">
-            <a class="page-link" href="/s?startCount=${startCount}">리스트로</a>                    
+            <a class="page-link" href="javascript:goList()">리스트로</a>                    
         </li>        
 </ul>
 </nav>

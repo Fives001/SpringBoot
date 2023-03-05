@@ -1,10 +1,12 @@
 package com.springboot.fives.paging;
 
+import com.springboot.fives.vo.PageInfoVO;
+
 public class PageNavigation {
 
-		public String getPageLinks(int startCount, int totalCount, int viewListCount, int bundleCount) {
+		public String getPageLinks(PageInfoVO pageInfoVO) {
 			StringBuffer sbRet = new StringBuffer();
-			WNAnchor wnanchor = getPageAnchor(startCount, totalCount, viewListCount, bundleCount);
+			WNAnchor wnanchor = getPageAnchor(pageInfoVO);
 
 			//맨처음 페이지
 			if(wnanchor.getFirstPage() != -1) {
@@ -99,8 +101,13 @@ public class PageNavigation {
 		 * @param anchorSacle 페이지 이동할 개수
 		 * @return WNAnchor Object를 반환
 		 */
-		public WNAnchor getPageAnchor(int startNum, int totalcount, int resultCnt, int anchorSacle) {
+		public WNAnchor getPageAnchor(PageInfoVO pageInfoVO) {
 			WNAnchor anchor = new WNAnchor();
+
+			int totalcount = pageInfoVO.getTotalCount();
+			int startNum =	pageInfoVO.getStartCount();
+			int resultCnt =	pageInfoVO.getPageViewCount();
+			int anchorSacle = pageInfoVO.getBundleCount();
 
 			if(totalcount == 0) {   //등록된 정보가 없으면 페이지 Anchor를 생성 하지 않는다.
 				return anchor;
@@ -178,13 +185,13 @@ public class PageNavigation {
          * @param bundleCount 페이지 이동할 개수
          * @return 페이징 문자열 반환
          */
-        public String getPageLinksWebAccess(String base, String url, int startCount, int totalCount, int viewListCount, int bundleCount) {
+        public String getPageLinksWebAccess(String base, String url, PageInfoVO pageInfoVO) {
 
 			String RequestURI = base;
 			String RequestURL = url;
 
             StringBuffer sbRet = new StringBuffer();
-            WNAnchor wnanchor = getPageAnchor(startCount, totalCount, viewListCount, bundleCount);
+            WNAnchor wnanchor = getPageAnchor(pageInfoVO);
             String ppreImg="";
             String preImg="";
             String nextImg="";
