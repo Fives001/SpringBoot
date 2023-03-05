@@ -10,4 +10,7 @@ public class TermsNaverVO {
     private String title;
     private String contentUrl;
     private String content;
+    private String thumbUrl;
+
+    private String startCount;
 }

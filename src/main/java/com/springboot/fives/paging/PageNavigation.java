@@ -8,16 +8,34 @@ public class PageNavigation {
 
 			//맨처음 페이지
 			if(wnanchor.getFirstPage() != -1) {
-				sbRet.append("<a class=\"pre\" href=\"#none\" onClick=\"javascript:doPaging('"+wnanchor.getFirstPage()+"');\" title=\"Previous Page\">[맨처음]</a>");
+				sbRet.append("<li class=\"page-item\">");
+				sbRet.append("<a class=\"page-link\" href=\"#none\" onClick=\"javascript:doPaging('"+wnanchor.getFirstPage()+"');\" >");
+				sbRet.append("<span aria-hidden=\"true\">맨처음</span>");
+				sbRet.append("<span class=\"sr-only\">맨처음</span>");
+				sbRet.append("</a>");
+				sbRet.append("</li>");			
 			} else {
-				sbRet.append("<a class=\"pre\" href=\"#none\" title=\"Previous Page\">[맨처음]</a>");
+				sbRet.append("<li class=\"page-item disabled\">");
+				sbRet.append("<a tabindex=\"-1\" class=\"page-link\" href=\"javascript:alert('disabled')\" >");
+				sbRet.append("맨처음");
+				sbRet.append("</a>");
+				sbRet.append("</li>");
 			} 			
 
 			//이전 페이지
 			if(wnanchor.getFirstPage() != -1) {
-				sbRet.append("<a class=\"pre\" href=\"#none\" onClick=\"javascript:doPaging('"+wnanchor.getBundleBefore()+"');\" title=\"Previous Page\">[이전페이지]</a>");
+				sbRet.append("<li class=\"page-item\">");
+				sbRet.append("<a class=\"page-link\" href=\"#none\" onClick=\"javascript:doPaging('"+wnanchor.getBundleBefore()+"');\" >");
+				sbRet.append("<span aria-hidden=\"true\">이전페이지</span>");
+				sbRet.append("<span class=\"sr-only\">이전페이지</span>");
+				sbRet.append("</a>");
+				sbRet.append("</li>");					
 			} else {
-				sbRet.append("<a class=\"pre\" href=\"#none\" title=\"Previous Page\">[이전페이지]</a>");
+				sbRet.append("<li class=\"page-item disabled\">");
+				sbRet.append("<a tabindex=\"-1\" class=\"page-link\" href=\"javascript:alert('disabled')\" >");
+				sbRet.append("이전페이지");
+				sbRet.append("</a>");
+				sbRet.append("</li>");
 			} 
  
 			int pageCount = wnanchor.getPageCount();
@@ -25,25 +43,49 @@ public class PageNavigation {
 
 			for(int i=0; i<pageCount && i < pages.length; i++) {
 				if(pages[i][1].equals("-1")) {
-					sbRet.append("<strong>" + pages[i][0] + "</strong>");
+
+					sbRet.append("<li class=\"page-item active\">");
+					sbRet.append("<a class=\"page-link\" href=\"#\">"+pages[i][0]+"<span class=\"sr-only\">(current)</span></a>");
+					sbRet.append("</li>");
 				} else {
-					sbRet.append("<a href=\"javascript:doPaging('"+pages[i][1]+"');\" title=\"Paging\"> "+pages[i][0]+" </a>");
+					sbRet.append("<li class=\"page-item\">");					
+					sbRet.append("<a class=\"page-link\" href=\"javascript:doPaging('"+pages[i][1]+"');\" > "+pages[i][0]+" </a>");
+					sbRet.append("</li>");					
 				}
 			}
 
 			//다음 페이지
 			if(wnanchor.getBundleNext() != -1) {
-    			sbRet.append("<a class=\"next\" href=\"#none\" onClick=\"javascript:doPaging('"+wnanchor.getBundleNext()+"')\" title=\"Next Page\">[다음페이지]</a>");
+				sbRet.append("<li class=\"page-item\">");
+				sbRet.append("<a class=\"page-link\" href=\"#none\" onClick=\"javascript:doPaging('"+wnanchor.getBundleNext()+"');\" >");
+				sbRet.append("<span aria-hidden=\"true\">다음페이지</span>");
+				sbRet.append("<span class=\"sr-only\">다음페이지</span>");
+				sbRet.append("</a>");
+				sbRet.append("</li>");	
 			} else {
-				sbRet.append("<a class=\"next\" href=\"#none\" title=\"Next Page\">[다음페이지]</a>");
+				sbRet.append("<li class=\"page-item disabled\">");
+				sbRet.append("<a tabindex=\"-1\" class=\"page-link\" href=\"javascript:alert('disabled')\" >");
+				sbRet.append("다음페이지");
+				sbRet.append("</a>");
+				sbRet.append("</li>");
 			}
 
 
 			//맨끝 페이지
 			if(wnanchor.getLastPage() != -1) {
-    			sbRet.append("<a class=\"next\" href=\"#none\" onClick=\"javascript:doPaging('"+wnanchor.getLastPage()+"')\" title=\"Next Page\">[맨끝페이지]</a>");
+				sbRet.append("<li class=\"page-item\">");
+				sbRet.append("<a class=\"page-link\" href=\"#none\" onClick=\"javascript:doPaging('"+wnanchor.getLastPage()+"');\" >");
+				sbRet.append("<span aria-hidden=\"true\">맨끝페이지</span>");
+				sbRet.append("<span class=\"sr-only\">맨끝페이지</span>");
+				sbRet.append("</a>");
+				sbRet.append("</li>");	
 			} else {
-				sbRet.append("<a class=\"next\" href=\"#none\" title=\"Next Page\">[맨끝페이지]</a>");
+				sbRet.append("<li class=\"page-item disabled\">");
+				sbRet.append("<a tabindex=\"-1\" class=\"page-link\" href=\"javascript:alert('disabled')\" >");
+				sbRet.append("맨끝페이지");
+				sbRet.append("</a>");
+				sbRet.append("</li>");	
+
 			}
  
 			return sbRet.toString();
