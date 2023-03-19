@@ -1,4 +1,4 @@
-package com.springboot.fives.controller;
+package com.springboot.fives.list.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -9,10 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.springboot.fives.list.service.WebcrawlerService;
+import com.springboot.fives.list.vo.PageInfoVO;
+import com.springboot.fives.list.vo.TermsNaverVO;
 import com.springboot.fives.paging.PageNavigation;
-import com.springboot.fives.service.WebcrawlerService;
-import com.springboot.fives.vo.PageInfoVO;
-import com.springboot.fives.vo.TermsNaverVO;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -24,7 +24,7 @@ public class WebcrawlerController {
 
 	public final PageNavigation pageNavigation=null;	
     
-	
+
     @RequestMapping(value="/i")
     public ModelAndView insert(ModelAndView mv) throws IOException{
         ArrayList<Hashtable<String,String>> result = new ArrayList<Hashtable<String,String>>();
@@ -34,11 +34,11 @@ public class WebcrawlerController {
         mv.addObject("result",result);
 
         //s.jsp에 결과를 전달
-        mv.setViewName("s");        
+        mv.setViewName("/list/s");        
         return mv;
     }
     
-	@RequestMapping(value="/s")
+	@RequestMapping(value="/list/s")
     public ModelAndView select (ModelAndView mv,HttpServletRequest request) throws IOException{
 
         PageInfoVO pageInfoVO = PageInfoVO.builder()
@@ -60,7 +60,7 @@ public class WebcrawlerController {
 
 
         //s.jsp에 결과를 전달
-        mv.setViewName("s2");        
+        mv.setViewName("/list/s2");        
         return mv;
 	}  
     
@@ -72,7 +72,7 @@ public class WebcrawlerController {
         System.out.println("===============");
     }
 
-	@RequestMapping(value="/d")
+	@RequestMapping(value="/list/d")
     public ModelAndView detail(ModelAndView mv,HttpServletRequest request) throws IOException{
 
         String id = request.getParameter("id")== null ? "" : request.getParameter("id");
@@ -87,7 +87,7 @@ public class WebcrawlerController {
         mv.addObject("pageInfo",pageInfoVO);                                
 
 
-        mv.setViewName("detail");        
+        mv.setViewName("/list/detail");        
         return mv;
     }    
 

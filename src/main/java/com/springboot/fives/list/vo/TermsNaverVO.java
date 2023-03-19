@@ -1,4 +1,4 @@
-package com.springboot.fives.vo;
+package com.springboot.fives.list.vo;
 
 import lombok.Getter;
 import lombok.Setter;

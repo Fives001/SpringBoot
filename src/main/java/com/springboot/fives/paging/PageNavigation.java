@@ -1,6 +1,7 @@
 package com.springboot.fives.paging;
 
-import com.springboot.fives.vo.PageInfoVO;
+import com.springboot.fives.list.vo.PageInfoVO;
+
 
 public class PageNavigation {
 

@@ -11,10 +11,10 @@
 <meta charset="UTF-8">
 <title>네이버 용어사전 상세보기</title>
 </head>
-<link rel="stylesheet" href="css/bootstrap.min.css" >
-<script src="js/jquery-3.2.1.slim.min.js" ></script>
-<script src="js/popper.min.js" ></script>
-<script src="js/bootstrap.min.js" ></script>
+<link rel="stylesheet" href="/css/bootstrap.min.css" >
+<script src="/js/jquery-3.2.1.slim.min.js" ></script>
+<script src="/js/popper.min.js" ></script>
+<script src="/js/bootstrap.min.js" ></script>
 
 
 <script>

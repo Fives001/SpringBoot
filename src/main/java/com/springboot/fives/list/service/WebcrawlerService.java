@@ -1,4 +1,4 @@
-package com.springboot.fives.service;
+package com.springboot.fives.list.service;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -20,8 +20,8 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.springboot.fives.vo.PageInfoVO;
-import com.springboot.fives.vo.TermsNaverVO;
+import com.springboot.fives.list.vo.PageInfoVO;
+import com.springboot.fives.list.vo.TermsNaverVO;
 
 @Service
 public class WebcrawlerService {
@@ -66,7 +66,7 @@ public class WebcrawlerService {
             if (!"".equals(pageInfoVO.getQuery())){
               SQL +=" where title like '%"+pageInfoVO.getQuery()+"%'";
            }            
-System.out.println("getTotalCount SQL:"+SQL);
+//System.out.println("getTotalCount SQL:"+SQL);
           }
           PreparedStatement pstmt = null;     
 
@@ -74,7 +74,7 @@ System.out.println("getTotalCount SQL:"+SQL);
           ResultSet rs = null;
 
           rs = pstmt.executeQuery();
-
+  
           if(rs.next()){     
             count = rs.getInt("cnt");
      }            
@@ -258,7 +258,7 @@ System.out.println("getTotalCount SQL:"+SQL);
                    }
                    SQL +=" limit "+pageInfoVO.getStartCount()+","+pageInfoVO.getPageViewCount();
 
-                   System.out.println("selectData SQL:"+SQL);                   
+                   //System.out.println("selectData SQL:"+SQL);                   
             PreparedStatement pstmt = null;     
 
             pstmt = connection.prepareStatement(SQL);
